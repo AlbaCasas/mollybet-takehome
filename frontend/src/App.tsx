@@ -2,9 +2,17 @@
 
 import React from 'react';
 import './styles.scss';
-
-const BACKEND_BASE_URL = `http://localhost:65000`;
+import { BrowserRouter, Route, Routes } from 'react-router';
+import { LeagueScreen } from './features/league/screens/LeagueScreen';
+import { TeamScreen } from './features/team/screens/TeamScreen';
 
 export const App: React.FunctionComponent = () => {
-  return <div className="message">The FE is running successfully</div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LeagueScreen />} />
+        <Route path="/team/:code" element={<TeamScreen />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };
