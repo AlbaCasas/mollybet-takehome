@@ -7,7 +7,7 @@ import { ClubHistory } from '../domain/ClubHistory';
 import { computeClubHistory } from '../domain/services/clubHistoryService';
 
 export const useGetClubHistory = (code: string) => {
-  const { club, loading: clubLoading, error: clubError } = useClubDetail(code);
+  const { club, loading: clubLoading, error: clubError, refetch } = useClubDetail(code);
   const { matchData, isConnected, error: matchesError } = useMatches();
 
   const history: ClubHistory | null = useMemo(() => {
@@ -18,7 +18,9 @@ export const useGetClubHistory = (code: string) => {
   return {
     history,
     loading: clubLoading,
-    error: clubError || matchesError,
+    error: clubError,
+    refetchClub: refetch,
     isSocketConnected: isConnected,
+    socketError: matchesError,
   };
 };

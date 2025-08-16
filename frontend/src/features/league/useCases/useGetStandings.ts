@@ -7,7 +7,7 @@ import { computeStandings } from '../domain/services/standingsService';
 import { Standing } from '../domain/Standing';
 
 export const useGetStandings = () => {
-  const { clubs, loading: clubsLoading, error: clubsError } = useClubs();
+  const { clubs, loading: clubsLoading, error: clubsError, refetch } = useClubs();
   const { matchData, isConnected, error: matchesError } = useMatches();
 
   const standings: Standing[] = useMemo(() => {
@@ -18,7 +18,9 @@ export const useGetStandings = () => {
   return {
     standings,
     loading: clubsLoading,
-    error: clubsError || matchesError,
+    error: clubsError,
+    refetchClubs: refetch,
     isConnected,
+    socketError: matchesError,
   };
 };

@@ -6,14 +6,6 @@ import { Label } from './Label';
 
 type ButtonVariant = 'default' | 'primary';
 
-interface ButtonProps {
-  children: React.ReactNode;
-  variant?: ButtonVariant;
-  className?: string;
-  onClick?: () => void;
-  disabled?: boolean;
-}
-
 const variantStyles: Record<ButtonVariant, string> = {
   default: 'bg-secondary hover:bg-muted border border-surface-border',
   primary: 'bg-primary hover:bg-brand-purple border border-primary',
@@ -24,12 +16,18 @@ const textVariants: Record<ButtonVariant, { className: string }> = {
   primary: { className: 'text-on-primary' },
 };
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button = ({
   children,
   variant = 'default',
   className,
   onClick,
   disabled = false,
+}: {
+  children: React.ReactNode;
+  variant?: ButtonVariant;
+  className?: string;
+  onClick?: () => void;
+  disabled?: boolean;
 }) => {
   const textConfig = textVariants[variant];
 
@@ -51,5 +49,3 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
-
-export type { ButtonProps };

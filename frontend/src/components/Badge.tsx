@@ -6,12 +6,6 @@ import { Label } from './Label';
 
 type BadgeVariant = 'default' | 'defaultWhite' | 'primary';
 
-interface BadgeProps {
-  children: React.ReactNode;
-  variant?: BadgeVariant;
-  className?: string;
-}
-
 const variantStyles: Record<BadgeVariant, string> = {
   default: 'bg-muted border-1 border-gray-300',
   defaultWhite: 'bg-white border-1 border-gray-300',
@@ -24,7 +18,15 @@ const textVariants: Record<BadgeVariant, { variant: 'small' | 'caption'; classNa
   primary: { variant: 'caption', className: 'text-on-primary font-medium' },
 };
 
-export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', className }) => {
+export const Badge = ({
+  children,
+  variant = 'default',
+  className,
+}: {
+  children: React.ReactNode;
+  variant?: BadgeVariant;
+  className?: string;
+}) => {
   const textConfig = textVariants[variant];
 
   return (
@@ -41,5 +43,3 @@ export const Badge: React.FC<BadgeProps> = ({ children, variant = 'default', cla
     </span>
   );
 };
-
-export type { BadgeProps };
