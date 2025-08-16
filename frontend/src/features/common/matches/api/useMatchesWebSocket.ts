@@ -17,14 +17,16 @@ export const useMatchesWebSocket = () => {
       setError(null);
     };
 
-    wsClient.onMessage = (newData: Match | Match[]) => {
-      try {
-        // Guard in case only one match is received in the message
-        const matchesArray: Match[] = Array.isArray(newData) ? newData : [newData];
-        setData((prev) => [...prev, ...matchesArray]);
-      } catch (err) {
-        console.error('Error processing match data:', err);
-        setError('Failed to process match data');
+    wsClient.onJSONMessage = (newData: Match | Match[]) => {
+      // Guard in case only one match is received in the message
+      const matchesArray: Match[] = Array.isArray(newData) ? newData : [newData];
+      setData((prev) => [...prev, ...matchesArray]);
+    };
+
+    wsClient.onTextMessage = (message: string) => {
+      // Disconnect the websocket when the season is finished
+      if (message.trim() === 'season finished') {
+        wsClient.disconnect();
       }
     };
 

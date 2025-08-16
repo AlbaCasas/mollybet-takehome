@@ -27,7 +27,7 @@ export const WebSocketStatusBar = ({
   };
 
   return (
-    <div className="bg-surface border-b border-surface-border px-4 py-2 flex justify-between items-center">
+    <div className="bg-surface border-b border-surface-border px-4 py-2 flex justify-between items-center sticky top-0 z-10">
       <div className="flex items-center gap-2">
         <Label variant="small" className="text-on-muted">
           Premier League Live Data

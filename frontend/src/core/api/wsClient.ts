@@ -24,12 +24,11 @@ export class WebSocketClient<T = unknown> {
 
     this.ws.onmessage = (event) => {
       try {
-        console.log('WebSocket message received:', event.data);
         const data = JSON.parse(event.data) as T;
-        this.onMessage?.(data);
-      } catch (error) {
-        console.error('Failed to parse WebSocket message:', error);
-        this.onError?.('Failed to parse message');
+        this.onJSONMessage?.(data);
+      } catch {
+        // If JSON parsing fails, treat as plain text message
+        this.onTextMessage?.(event.data);
       }
     };
 
@@ -56,7 +55,8 @@ export class WebSocketClient<T = unknown> {
     return this.ws?.readyState === WebSocket.OPEN;
   }
 
-  onMessage?: (data: T) => void;
+  onJSONMessage?: (data: T) => void;
+  onTextMessage?: (message: string) => void;
   onOpen?: () => void;
   onClose?: () => void;
   onError?: (error: string) => void;
