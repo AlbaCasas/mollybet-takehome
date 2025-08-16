@@ -7,43 +7,16 @@ import { Button } from '../../../components/Button';
 import { ClubHistory } from '../components/ClubHistory';
 import { Label } from '../../../components/Label';
 import { Card } from '../../../components/Card';
-
-const mockTeamData = {
-  name: 'AFC Bournemouth',
-  code: 'BOU',
-  matches: [
-    {
-      matchday: 3,
-      date: 'Sat, 24 Aug 2019',
-      status: 'HOME' as const,
-      homeTeam: 'AFC Bournemouth',
-      awayTeam: 'Manchester City FC',
-      homeScore: 1,
-      awayScore: 3,
-      goalsFor: 1,
-      goalsAgainst: 3,
-      goalDifference: -2,
-      result: 'L',
-    },
-    {
-      matchday: 2,
-      date: 'Sat, 17 Aug 2019',
-      status: 'AWAY' as const,
-      homeTeam: 'Aston Villa FC',
-      awayTeam: 'AFC Bournemouth',
-      homeScore: 1,
-      awayScore: 2,
-      goalsFor: 2,
-      goalsAgainst: 1,
-      goalDifference: 1,
-      result: 'W',
-    },
-  ],
-};
+import { useGetClubHistory } from '../useCases/useGetClubHistory';
 
 export const ClubScreen: React.FC = () => {
   const navigate = useNavigate();
   const { code } = useParams<{ code: string }>();
+  const { history, error } = useGetClubHistory(code || '');
+
+  if (error || !history) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="min-h-screen p-8 bg-surface">
@@ -57,10 +30,10 @@ export const ClubScreen: React.FC = () => {
         </div>
 
         <Card className={`mb-8 text-center gap-4 flex`}>
-          <Badge>{code}</Badge>
-          <Label variant="heading">{mockTeamData.name}</Label>
+          <Badge>{history.code}</Badge>
+          <Label variant="heading">{history.name}</Label>
         </Card>
-        <ClubHistory matches={mockTeamData.matches} />
+        <ClubHistory matches={history.matches} />
       </div>
     </div>
   );

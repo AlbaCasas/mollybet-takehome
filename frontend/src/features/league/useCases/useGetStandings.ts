@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useClubs } from '../api/useClubs';
 import { useMatches } from '../../common/matches/context/MatchesProvider';
-import { computeStandings } from '../domain/services/standings';
+import { computeStandings } from '../domain/services/standingsService';
 import { Standing } from '../domain/Standing';
 
 export const useGetStandings = () => {

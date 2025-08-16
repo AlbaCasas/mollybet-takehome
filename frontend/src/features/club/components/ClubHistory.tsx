@@ -4,26 +4,26 @@ import React from 'react';
 import { Label } from '../../../components/Label';
 import { Badge } from '../../../components/Badge';
 import { Card } from '../../../components/Card';
-import { ClubMatch } from '../domain/Match';
+import { ClubMatch, Result, Venue } from '../domain/Match';
 
 const MatchHeader = ({
   matchday,
   date,
-  status,
+  venue,
   result,
 }: {
-  matchday: number;
+  matchday: string;
   date: string;
-  status: 'HOME' | 'AWAY';
-  result: string;
+  venue: Venue;
+  result: Result;
 }) => (
   <div className="flex items-center justify-between mb-3">
     <div className="flex items-center gap-3">
-      <Badge variant="defaultWhite">Matchday {matchday}</Badge>
+      <Badge variant="defaultWhite">{matchday}</Badge>
       <Label variant="small" className="text-on-muted">
         {date}
       </Label>
-      <Badge variant={status === 'HOME' ? 'default' : 'defaultWhite'}>{status}</Badge>
+      <Badge variant={venue === 'Home' ? 'default' : 'defaultWhite'}>{venue}</Badge>
     </div>
     <Badge variant="defaultWhite">{result}</Badge>
   </div>
@@ -34,23 +34,23 @@ const ScoreDisplay = ({
   awayTeam,
   homeScore,
   awayScore,
-  status,
+  venue,
 }: {
   homeTeam: string;
   awayTeam: string;
   homeScore: number;
   awayScore: number;
-  status: 'HOME' | 'AWAY';
+  venue: Venue;
 }) => (
   <div className="flex items-center justify-center gap-4 py-2 w-full">
     <div className="flex flex-col justify-center text-right">
       <Label
         variant="body"
-        className={`font-semibold ${status === 'HOME' ? 'text-on-surface' : 'text-on-muted'}`}
+        className={`font-semibold ${venue === 'Home' ? 'text-on-surface' : 'text-on-muted'}`}
       >
         {homeTeam}
       </Label>
-      {status === 'HOME' && (
+      {venue === 'Home' && (
         <Label variant="small" className="text-on-muted">
           Home
         </Label>
@@ -70,11 +70,11 @@ const ScoreDisplay = ({
     <div className="flex flex-col justify-center text-left">
       <Label
         variant="body"
-        className={`font-semibold block ${status === 'AWAY' ? 'text-on-surface' : 'text-on-muted'}`}
+        className={`font-semibold block ${venue === 'Away' ? 'text-on-surface' : 'text-on-muted'}`}
       >
         {awayTeam}
       </Label>
-      {status === 'AWAY' && (
+      {venue === 'Away' && (
         <Label variant="small" className="text-on-muted">
           Away
         </Label>
@@ -90,7 +90,7 @@ const GoalsDetail = ({
 }: {
   goalsFor: number;
   goalsAgainst: number;
-  goalDifference: number;
+  goalDifference: string;
 }) => (
   <div className="flex items-center justify-center gap-6 mt-3 pt-3 border-t border-surface-border">
     <div className="text-center">
@@ -115,9 +115,8 @@ const GoalsDetail = ({
       </Label>
       <Label
         variant="small"
-        className={`font-bold ${goalDifference < 0 ? 'text-error' : 'text-on-surface'}`}
+        className={`font-bold ${goalDifference.startsWith('-') ? 'text-error' : 'text-on-surface'}`}
       >
-        {goalDifference > 0 ? '+' : ''}
         {goalDifference}
       </Label>
     </div>
@@ -127,9 +126,9 @@ const GoalsDetail = ({
 const MatchCard = ({ match }: { match: ClubMatch }) => (
   <div className="p-4 rounded-lg border border-surface-border hover:bg-muted transition-colors bg-white">
     <MatchHeader
-      matchday={match.matchday}
+      matchday={match.round}
       date={match.date}
-      status={match.status}
+      venue={match.venue}
       result={match.result}
     />
     <ScoreDisplay
@@ -137,7 +136,7 @@ const MatchCard = ({ match }: { match: ClubMatch }) => (
       awayTeam={match.awayTeam}
       homeScore={match.homeScore}
       awayScore={match.awayScore}
-      status={match.status}
+      venue={match.venue}
     />
     <GoalsDetail
       goalsFor={match.goalsFor}

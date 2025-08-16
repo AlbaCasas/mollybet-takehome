@@ -1,15 +1,18 @@
 /** @format */
 
+export type Venue = 'Home' | 'Away';
+export type Result = 'Win' | 'Loss' | 'Draw';
+
 export interface ClubMatch {
-  matchday: number;
+  round: string;
   date: string;
-  status: 'HOME' | 'AWAY';
+  venue: Venue;
   homeTeam: string;
   awayTeam: string;
   homeScore: number;
   awayScore: number;
   goalsFor: number;
   goalsAgainst: number;
-  goalDifference: number;
-  result: string;
+  goalDifference: string;
+  result: Result;
 }
