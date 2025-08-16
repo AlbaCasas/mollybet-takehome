@@ -1,50 +1,45 @@
 /** @format */
 
 import React from 'react';
-import { useLeagueTable } from '../useCases/useLeagueTable';
+import { Label } from '../../../components/Label';
+import { Badge } from '../../../components/Badge';
+import { LeagueTable } from '../components/LeagueTable';
+import { useGetStandings } from '../useCases/useGetStandings';
+import { LiveIndicator } from '../components/LiveIndicator';
 
 export const LeagueScreen: React.FC = () => {
-  const { leagueTable, loading, isConnected } = useLeagueTable();
+  const { standings, loading, isConnected } = useGetStandings();
 
-  if (loading || !isConnected) {
-    return <div>Loading league table...</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-surface">
+        <Label>Loading league table...</Label>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <h1>Premier League Table</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Pos</th>
-            <th>Team</th>
-            <th>P</th>
-            <th>W</th>
-            <th>D</th>
-            <th>L</th>
-            <th>GF</th>
-            <th>GA</th>
-            <th>GD</th>
-            <th>Pts</th>
-          </tr>
-        </thead>
-        <tbody>
-          {leagueTable.map((club, index) => (
-            <tr key={club.code}>
-              <td>{index + 1}</td>
-              <td>{club.code}</td>
-              <td>{club.stats.played}</td>
-              <td>{club.stats.won}</td>
-              <td>{club.stats.drawn}</td>
-              <td>{club.stats.lost}</td>
-              <td>{club.stats.goalsFor}</td>
-              <td>{club.stats.goalsAgainst}</td>
-              <td>{club.stats.goalDifference}</td>
-              <td>{club.stats.points}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="min-h-screen bg-surface">
+      <div className="bg-white border-b border-surface-border">
+        <div className="max-w-6xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-center mb-4">
+            <Badge variant="primary">Premier League 2019/20</Badge>
+          </div>
+          <div className="text-center">
+            <Label variant="heading" as="h1" className="text-3xl font-bold text-primary mb-2">
+              League Table
+            </Label>
+            <Label variant="body" className="text-on-muted">
+              Live simulation of the 2019/20 season
+            </Label>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        {!!standings.length && <LiveIndicator isConnected={isConnected} />}
+        <LeagueTable tableRows={standings} />
+      </div>
     </div>
   );
 };

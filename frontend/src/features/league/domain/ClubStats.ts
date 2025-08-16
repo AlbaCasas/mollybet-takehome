@@ -1,6 +1,6 @@
 /** @format */
 
-export interface ClubStats {
+export type ClubStats = {
   played: number;
   won: number;
   drawn: number;
@@ -8,5 +8,6 @@ export interface ClubStats {
   goalsFor: number;
   goalsAgainst: number;
   goalDifference: number;
+  goalDifferenceText: string;
   points: number;
-}
+};

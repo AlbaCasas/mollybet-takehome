@@ -1,8 +1,9 @@
 /** @format */
 
-@import 'tailwindcss';
+@use 'tailwindcss';
 
 @theme {
+  --color-white: #ffffff;
   --color-surface: #fafafa;
   --color-on-surface: #05060d;
   --color-surface-border: #e4e7eb;
@@ -24,8 +25,4 @@
 
   --color-brand-purple: #8000ff;
   --color-brand-pink: #e052aa;
-
-  --color-result-win: #15803d;
-  --color-result-draw: #facc15;
-  --color-result-loss: #e53935;
 }

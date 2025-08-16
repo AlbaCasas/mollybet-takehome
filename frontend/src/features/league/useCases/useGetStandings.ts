@@ -3,21 +3,20 @@
 import { useMemo } from 'react';
 import { useClubs } from '../api/useClubs';
 import { useMatches } from '../../common/matches/context/MatchesProvider';
-import { mapToClub } from '../domain/mappers';
-import { Club } from '../domain/Club';
+import { computeStandings } from '../domain/services/standings';
+import { Standing } from '../domain/Standing';
 
-export const useLeagueTable = () => {
+export const useGetStandings = () => {
   const { clubs, loading: clubsLoading, error: clubsError } = useClubs();
   const { matchData, isConnected, error: matchesError } = useMatches();
 
-  const leagueTable: Club[] = useMemo(() => {
-    if (!clubs.length || !matchData.length) return [];
-
-    return clubs.map((clubDTO) => mapToClub(clubDTO, matchData));
+  const standings: Standing[] = useMemo(() => {
+    if (!clubs.length) return [];
+    return computeStandings(clubs, matchData);
   }, [clubs, matchData]);
 
   return {
-    leagueTable,
+    standings,
     loading: clubsLoading,
     error: clubsError || matchesError,
     isConnected,
