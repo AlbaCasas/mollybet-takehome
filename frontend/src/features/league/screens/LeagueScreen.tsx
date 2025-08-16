@@ -6,9 +6,11 @@ import { Badge } from '../../../components/Badge';
 import { LeagueTable } from '../components/LeagueTable';
 import { useGetStandings } from '../useCases/useGetStandings';
 import { LiveIndicator } from '../components/LiveIndicator';
+import { useNavigate } from 'react-router';
 
 export const LeagueScreen: React.FC = () => {
   const { standings, loading, isConnected } = useGetStandings();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -38,7 +40,10 @@ export const LeagueScreen: React.FC = () => {
 
       <div className="max-w-6xl mx-auto px-6 py-8">
         {!!standings.length && <LiveIndicator isConnected={isConnected} />}
-        <LeagueTable tableRows={standings} />
+        <LeagueTable
+          onRowClick={(clubCode: string) => navigate(`/club/${clubCode}`)}
+          tableRows={standings}
+        />
       </div>
     </div>
   );

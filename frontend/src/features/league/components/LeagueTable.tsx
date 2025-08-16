@@ -16,9 +16,11 @@ import { Standing } from '../domain/Standing';
 export const LeagueTable = ({
   tableRows,
   className,
+  onRowClick,
 }: {
   tableRows: Standing[];
   className?: string;
+  onRowClick: (clubCode: string) => void;
 }) => {
   const getPositionIndicatorColor = (position: number): string => {
     if (position <= 3) return 'bg-green-500';
@@ -61,7 +63,11 @@ export const LeagueTable = ({
                 const isEven = index % 2 === 0;
                 const standingPosition = index + 1;
                 return (
-                  <TableRow key={row.clubCode} className={cn(isEven ? 'bg-surface' : 'bg-white')}>
+                  <TableRow
+                    key={row.clubCode}
+                    className={cn(isEven ? 'bg-surface' : 'bg-white')}
+                    onClick={() => onRowClick(row.clubCode)}
+                  >
                     <TableTD align="left">
                       <div
                         className={`absolute left-0 top-0 h-full w-1 ${getPositionIndicatorColor(standingPosition)}`}

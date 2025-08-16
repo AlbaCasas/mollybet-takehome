@@ -14,7 +14,7 @@ interface LabelProps {
 }
 
 const variantStyles: Record<LabelVariant, string> = {
-  heading: 'text-2xl font-semibold text-on-surface',
+  heading: 'text-3xl font-bold text-on-surface',
   subheading: 'text-xl font-medium text-on-surface',
   body: 'text-base font-normal text-on-surface',
   caption: 'text-sm font-medium text-on-muted',

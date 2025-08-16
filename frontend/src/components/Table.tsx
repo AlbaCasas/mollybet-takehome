@@ -29,11 +29,26 @@ export function TableBody({ children }: { children: React.ReactNode }) {
 export function TableRow({
   children,
   className,
+  onClick,
 }: {
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }) {
-  return <tr className={cn('hover:bg-muted transition-colors', className)}>{children}</tr>;
+  return (
+    <tr
+      className={cn(
+        'hover:bg-muted transition-colors',
+        {
+          'cursor-pointer': onClick,
+        },
+        className
+      )}
+      onClick={onClick}
+    >
+      {children}
+    </tr>
+  );
 }
 
 export function TableTH({
