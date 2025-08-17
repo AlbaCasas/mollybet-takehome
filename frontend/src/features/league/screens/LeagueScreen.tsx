@@ -3,14 +3,14 @@
 import React, { useCallback } from 'react';
 import { Label } from '../../../components/Label';
 import { LeagueTable } from '../components/LeagueTable';
-import { WebSocketStatusBar } from '../../../components/WebSocketStatusBar';
+import { WebSocketStatusBar } from '../../common/matches/components/WebSocketStatusBar';
 import { useGetStandings } from '../useCases/useGetStandings';
 import { useNavigate } from 'react-router';
 import { ErrorState } from '../../../components/ErrorState';
 import { LeagueHeader } from '../components/LeagueHeader';
 
 export const LeagueScreen: React.FC = () => {
-  const { standings, loading, error, refetchClubs, isConnected, socketError } = useGetStandings();
+  const { standings, loading, error, refetchClubs } = useGetStandings();
   const navigate = useNavigate();
 
   const renderContent = useCallback(() => {
@@ -44,11 +44,11 @@ export const LeagueScreen: React.FC = () => {
         </div>
       </>
     );
-  }, [standings, loading, error, refetchClubs, isConnected, socketError]);
+  }, [standings, loading, error, refetchClubs]);
 
   return (
     <div className="min-h-screen bg-surface">
-      <WebSocketStatusBar isConnected={isConnected} error={socketError} />
+      <WebSocketStatusBar />
       {renderContent()}
     </div>
   );

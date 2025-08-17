@@ -7,15 +7,14 @@ import { Button } from '../../../components/Button';
 import { ClubHistory } from '../components/ClubHistory';
 import { Label } from '../../../components/Label';
 import { Card } from '../../../components/Card';
-import { WebSocketStatusBar } from '../../../components/WebSocketStatusBar';
+import { WebSocketStatusBar } from '../../common/matches/components/WebSocketStatusBar';
 import { ErrorState } from '../../../components/ErrorState';
 import { useGetClubHistory } from '../useCases/useGetClubHistory';
 
 export const ClubScreen: React.FC = () => {
   const navigate = useNavigate();
   const { code } = useParams<{ code: string }>();
-  const { history, loading, error, refetchClub, isSocketConnected, socketError } =
-    useGetClubHistory(code);
+  const { history, loading, error, refetchClub } = useGetClubHistory(code);
 
   const renderContent = useCallback(() => {
     if (loading) {
@@ -60,11 +59,11 @@ export const ClubScreen: React.FC = () => {
         </div>
       </div>
     );
-  }, [history, loading, error, refetchClub, isSocketConnected, socketError]);
+  }, [history, loading, error, refetchClub]);
 
   return (
     <div className="min-h-screen bg-surface">
-      <WebSocketStatusBar isConnected={isSocketConnected} error={socketError} />
+      <WebSocketStatusBar />
 
       {renderContent()}
     </div>

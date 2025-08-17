@@ -8,7 +8,7 @@ import { usePremierLeagueMatches } from '../../common/matches/context/MatchesPro
 
 export const useGetStandings = () => {
   const { clubs, loading: clubsLoading, error: clubsError, refetch } = useClubs();
-  const { matches, isConnected, error: matchesError } = usePremierLeagueMatches();
+  const { matches } = usePremierLeagueMatches();
 
   const standings: Standing[] = useMemo(() => {
     if (!clubs.length) return [];
@@ -20,7 +20,5 @@ export const useGetStandings = () => {
     loading: clubsLoading,
     error: clubsError,
     refetchClubs: refetch,
-    isConnected,
-    socketError: matchesError,
   };
 };

@@ -1,7 +1,7 @@
 /** @format */
 
 export interface PremierLeagueMatch {
-  round: string;
+  round: number;
   date: string;
   homeClub: string;
   awayClub: string;

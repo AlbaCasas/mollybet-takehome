@@ -4,7 +4,7 @@ export type Venue = 'Home' | 'Away';
 export type Result = 'Win' | 'Loss' | 'Draw';
 
 export interface ClubMatch {
-  round: string;
+  round: number;
   date: string;
   venue: Venue;
   homeTeam: string;

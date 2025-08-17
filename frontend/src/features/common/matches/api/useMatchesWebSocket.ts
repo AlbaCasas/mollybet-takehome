@@ -24,11 +24,12 @@ export const useMatchesWebSocket = () => {
 
       const matches = wsMatchesArray.filter((match) => match.competition === 'Premier League');
       const premierLeagueMatches: PremierLeagueMatch[] = matches.map((match) => ({
-        ...match,
+        date: match.date,
         homeClub: match.home,
         awayClub: match.away,
         homeScore: match.score.ft[0],
         awayScore: match.score.ft[1],
+        round: parseInt(match.round.split(' ')[1]),
       }));
       setData((prev) => [...prev, ...premierLeagueMatches]);
     };

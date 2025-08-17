@@ -126,7 +126,7 @@ const GoalsDetail = ({
 const MatchCard = ({ match }: { match: ClubMatch }) => (
   <div className="p-4 rounded-lg border border-surface-border bg-white">
     <MatchHeader
-      matchday={match.round}
+      matchday={`Matchday ${match.round}`}
       date={match.date}
       venue={match.venue}
       result={match.result}

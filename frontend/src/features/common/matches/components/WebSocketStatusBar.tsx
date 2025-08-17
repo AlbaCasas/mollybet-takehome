@@ -1,16 +1,12 @@
 /** @format */
 
 import React from 'react';
-import { Label } from './Label';
-import { cn } from '../core/styles/utils';
+import { Label } from '../../../../components/Label';
+import { cn } from '../../../../core/styles/utils';
+import { usePremierLeagueMatches } from '../context/MatchesProvider';
 
-export const WebSocketStatusBar = ({
-  isConnected,
-  error,
-}: {
-  isConnected: boolean;
-  error?: string | null;
-}) => {
+export const WebSocketStatusBar = () => {
+  const { isConnected, error, matches } = usePremierLeagueMatches();
   const getStatusTextColor = () => {
     if (error) return 'text-error';
     return isConnected ? 'text-success' : 'text-warning';
@@ -30,7 +26,7 @@ export const WebSocketStatusBar = ({
     <div className="bg-surface border-b border-surface-border px-4 py-2 flex justify-between items-center sticky top-0 z-10">
       <div className="flex items-center gap-2">
         <Label variant="small" className="text-on-muted">
-          Premier League Live Data
+          Premier League Day {matches.length > 0 ? matches[matches.length - 1].round : 0}
         </Label>
       </div>
       <div className="flex items-center gap-2">

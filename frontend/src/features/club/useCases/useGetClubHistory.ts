@@ -8,7 +8,7 @@ import { usePremierLeagueMatches } from '../../common/matches/context/MatchesPro
 
 export const useGetClubHistory = (code?: string) => {
   const { club, loading: clubLoading, error: clubError, refetch } = useClubDetail(code);
-  const { matches, isConnected, error: matchesError } = usePremierLeagueMatches();
+  const { matches } = usePremierLeagueMatches();
 
   const history: ClubHistory | null = useMemo(() => {
     if (!club) return null;
@@ -20,7 +20,5 @@ export const useGetClubHistory = (code?: string) => {
     loading: clubLoading,
     error: clubError,
     refetchClub: refetch,
-    isSocketConnected: isConnected,
-    socketError: matchesError,
   };
 };
