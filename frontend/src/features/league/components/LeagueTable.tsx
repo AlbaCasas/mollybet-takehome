@@ -12,6 +12,7 @@ import {
 } from '../../../components/Table';
 import { cn } from '../../../core/styles/utils';
 import { Standing } from '../domain/Standing';
+import { Badge } from '../../../components/Badge';
 
 export const LeagueTable = ({
   tableRows,
@@ -72,16 +73,16 @@ export const LeagueTable = ({
                       <div
                         className={`absolute left-0 top-0 h-full w-1 ${getPositionIndicatorColor(standingPosition)}`}
                       />
-                      <Label variant="body" className="mx-4 my-3 font-semibold">
+                      <Label variant="caption" className="mx-4 my-3">
                         {standingPosition}
                       </Label>
                     </TableTD>
 
                     <TableTD align="left">
-                      <div className="flex items-center px-4 py-3">
-                        <Label variant="small" className="mr-2 w-8 text-on-muted">
+                      <div className="flex items-center px-4 py-3 gap-3">
+                        <Badge variant="defaultSmall" className="w-[40px]">
                           {row.clubCode}
-                        </Label>
+                        </Badge>
                         <Label variant="body" className="font-medium">
                           {row.clubName}
                         </Label>

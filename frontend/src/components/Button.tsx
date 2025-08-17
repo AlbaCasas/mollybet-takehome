@@ -3,6 +3,7 @@
 import React from 'react';
 import { cn } from '../core/styles/utils';
 import { Label } from './Label';
+import Icon from '@mdi/react';
 
 type ButtonVariant = 'default' | 'primary';
 
@@ -19,12 +20,14 @@ const textVariants: Record<ButtonVariant, { className: string }> = {
 export const Button = ({
   children,
   variant = 'default',
+  icon,
   className,
   onClick,
   disabled = false,
 }: {
   children: React.ReactNode;
   variant?: ButtonVariant;
+  icon?: string;
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
@@ -43,9 +46,12 @@ export const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      <Label variant="body" className={textConfig.className}>
-        {children}
-      </Label>
+      <div className="flex items-center gap-3">
+        {icon && <Icon path={icon} size={0.75} className={textConfig.className} />}
+        <Label variant="body" className={textConfig.className}>
+          {children}
+        </Label>
+      </div>
     </button>
   );
 };

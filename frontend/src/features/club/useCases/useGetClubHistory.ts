@@ -6,7 +6,7 @@ import { useClubDetail } from '../api/useClubDetail';
 import { ClubHistory } from '../domain/ClubHistory';
 import { computeClubHistory } from '../domain/services/clubHistoryService';
 
-export const useGetClubHistory = (code: string) => {
+export const useGetClubHistory = (code?: string) => {
   const { club, loading: clubLoading, error: clubError, refetch } = useClubDetail(code);
   const { matchData, isConnected, error: matchesError } = useMatches();
 

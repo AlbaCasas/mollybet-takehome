@@ -1,15 +1,15 @@
 /** @format */
 
 import { ClubDTO } from '../../api/dto/ClubDTO';
-import { Match } from '../../../common/matches/api/dto/Match';
 import { Standing } from '../Standing';
 import { ClubStats } from '../ClubStats';
+import { Match } from '../../../common/matches/domain/Match';
 
 const POINTS_WIN = 3;
 const POINTS_DRAW = 1;
 
 function isMatchForClub(m: Match, clubCode: string): boolean {
-  return m.home === clubCode || m.away === clubCode;
+  return m.homeClub === clubCode || m.awayClub === clubCode;
 }
 
 function goalsForAndAgainst(
@@ -18,7 +18,7 @@ function goalsForAndAgainst(
   homeGoals: number,
   awayGoals: number
 ): { forGoals: number; againstGoals: number } {
-  const isHome = m.home === clubCode;
+  const isHome = m.homeClub === clubCode;
   return isHome
     ? { forGoals: homeGoals, againstGoals: awayGoals }
     : { forGoals: awayGoals, againstGoals: homeGoals };
@@ -39,11 +39,8 @@ function computeClubStats(clubCode: string, matches: Match[]): ClubStats {
   for (const match of matches) {
     if (!isMatchForClub(match, clubCode)) continue;
 
-    const score = match.score.ft;
-    if (!score) continue;
-
-    const [homeGoals, awayGoals] = score;
-    const { forGoals, againstGoals } = goalsForAndAgainst(match, clubCode, homeGoals, awayGoals);
+    const { homeScore, awayScore } = match;
+    const { forGoals, againstGoals } = goalsForAndAgainst(match, clubCode, homeScore, awayScore);
 
     played += 1;
     goalsFor += forGoals;

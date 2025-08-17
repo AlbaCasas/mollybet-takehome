@@ -8,14 +8,14 @@ import { ClubHistory } from '../components/ClubHistory';
 import { Label } from '../../../components/Label';
 import { Card } from '../../../components/Card';
 import { WebSocketStatusBar } from '../../../components/WebSocketStatusBar';
-import { ErrorCard } from '../../../components/ErrorCard';
+import { ErrorState } from '../../../components/ErrorState';
 import { useGetClubHistory } from '../useCases/useGetClubHistory';
 
 export const ClubScreen: React.FC = () => {
   const navigate = useNavigate();
   const { code } = useParams<{ code: string }>();
   const { history, loading, error, refetchClub, isSocketConnected, socketError } =
-    useGetClubHistory(code || '');
+    useGetClubHistory(code);
 
   const renderContent = useCallback(() => {
     if (loading) {
@@ -28,30 +28,36 @@ export const ClubScreen: React.FC = () => {
       );
     }
 
-    if (error || !history) {
+    if (error || !history?.code || !history?.name) {
       return (
-        <div className="flex justify-center items-center h-64">
-          <ErrorCard
-            title="Club Not Found"
-            message={error || 'No data available'}
-            onRetry={refetchClub}
-            retryLabel="Retry"
-          />
-        </div>
+        <ErrorState
+          title="Unable to Load Club Data"
+          message={
+            "We couldn't retrieve the team information at this time. Please check your connection and try again."
+          }
+          error={error}
+          onRetry={refetchClub}
+          onGoBack={() => navigate('/')}
+        />
       );
     }
 
     return (
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-8 text-center">
-          <Badge variant="primary">Premier League 2019/2020</Badge>
+      <div className="p-8">
+        <div className="mb-6">
+          <Button onClick={() => navigate('/')}>← Back to League Table</Button>
         </div>
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-8 text-center">
+            <Badge variant="primary">Premier League 2019/2020</Badge>
+          </div>
 
-        <Card className={`mb-8 text-center gap-4 flex`}>
-          <Badge>{history.code}</Badge>
-          <Label variant="heading">{history.name}</Label>
-        </Card>
-        <ClubHistory matches={history.matches} />
+          <Card className={`mb-8 text-center gap-4 flex`}>
+            <Badge>{history.code}</Badge>
+            <Label variant="heading">{history.name}</Label>
+          </Card>
+          <ClubHistory matches={history.matches} />
+        </div>
       </div>
     );
   }, [history, loading, error, refetchClub, isSocketConnected, socketError]);
@@ -59,12 +65,8 @@ export const ClubScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-surface">
       <WebSocketStatusBar isConnected={isSocketConnected} error={socketError} />
-      <div className="p-8">
-        <div className="mb-6">
-          <Button onClick={() => navigate('/')}>← Back to League Table</Button>
-        </div>
-        {renderContent()}
-      </div>
+
+      {renderContent()}
     </div>
   );
 };

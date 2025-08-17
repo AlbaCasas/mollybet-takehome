@@ -1,19 +1,18 @@
 /** @format */
 
-import { Match } from '../../../common/matches/api/dto/Match';
+import { Match } from '../../../common/matches/domain/Match';
 import { ClubHistory } from '../ClubHistory';
 import { ClubMatch, Result, Venue } from '../Match';
 
-const isClubInMatch = (code: string, m: Match) => m.home === code || m.away === code;
-const isHomeTeam = (code: string, m: Match) => m.home === code;
+const isClubInMatch = (code: string, m: Match) => m.homeClub === code || m.awayClub === code;
+const isHomeTeam = (code: string, m: Match) => m.homeClub === code;
 
 const computeClubMatches = (code: string, matches: Match[]): ClubMatch[] =>
   matches
     .filter((match) => isClubInMatch(code, match))
     .map((match) => {
       const venue: Venue = isHomeTeam(code, match) ? 'Home' : 'Away';
-      const [homeScore, awayScore] = match.score.ft as [number, number];
-
+      const { homeScore, awayScore } = match;
       const goalsFor = venue === 'Home' ? homeScore : awayScore;
       const goalsAgainst = venue === 'Home' ? awayScore : homeScore;
 
@@ -25,10 +24,10 @@ const computeClubMatches = (code: string, matches: Match[]): ClubMatch[] =>
         round: match.round,
         date: match.date,
         venue,
-        homeTeam: match.home,
-        awayTeam: match.away,
-        homeScore,
-        awayScore,
+        homeTeam: match.homeClub,
+        awayTeam: match.awayClub,
+        homeScore: homeScore,
+        awayScore: awayScore,
         goalsFor,
         goalsAgainst,
         goalDifference: goalDiff > 0 ? `+${goalDiff}` : `${goalDiff}`,

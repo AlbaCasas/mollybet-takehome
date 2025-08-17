@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { WebSocketClient } from '../../../../core/api/wsClient';
-import { Match } from './dto/Match';
+import { MatchDTO } from './dto/MatchDTO';
+import { Match } from '../domain/Match';
 
 export const useMatchesWebSocket = () => {
   const [data, setData] = useState<Match[]>([]);
@@ -10,17 +11,25 @@ export const useMatchesWebSocket = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const wsClient = new WebSocketClient<Match | Match[]>('ws://localhost:65000/matches/ws');
+    const wsClient = new WebSocketClient<MatchDTO | MatchDTO[]>('ws://localhost:65000/matches/ws');
 
     wsClient.onOpen = () => {
       setIsConnected(true);
       setError(null);
     };
 
-    wsClient.onJSONMessage = (newData: Match | Match[]) => {
+    wsClient.onJSONMessage = (newData: MatchDTO | MatchDTO[]) => {
       // Guard in case only one match is received in the message
-      const matchesArray: Match[] = Array.isArray(newData) ? newData : [newData];
-      setData((prev) => [...prev, ...matchesArray]);
+      const wsMatchesArray: MatchDTO[] = Array.isArray(newData) ? newData : [newData];
+
+      const matches: Match[] = wsMatchesArray.map((match) => ({
+        ...match,
+        homeClub: match.home,
+        awayClub: match.away,
+        homeScore: match.score.ft[0],
+        awayScore: match.score.ft[1],
+      }));
+      setData((prev) => [...prev, ...matches]);
     };
 
     wsClient.onTextMessage = (message: string) => {

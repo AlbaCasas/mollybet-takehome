@@ -124,7 +124,7 @@ const GoalsDetail = ({
 );
 
 const MatchCard = ({ match }: { match: ClubMatch }) => (
-  <div className="p-4 rounded-lg border border-surface-border hover:bg-muted transition-colors bg-white">
+  <div className="p-4 rounded-lg border border-surface-border bg-white">
     <MatchHeader
       matchday={match.round}
       date={match.date}

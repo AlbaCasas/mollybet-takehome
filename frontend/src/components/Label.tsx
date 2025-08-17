@@ -3,7 +3,7 @@
 import React from 'react';
 import { cn } from '../core/styles/utils';
 
-type LabelVariant = 'heading' | 'subheading' | 'body' | 'caption' | 'small';
+export type LabelVariant = 'heading' | 'subheading' | 'body' | 'caption' | 'small' | 'extraSmall';
 type LabelElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' | 'div';
 
 const variantStyles: Record<LabelVariant, string> = {
@@ -12,6 +12,7 @@ const variantStyles: Record<LabelVariant, string> = {
   body: 'text-base font-normal text-on-surface',
   caption: 'text-sm font-medium text-on-muted',
   small: 'text-xs font-normal text-on-muted',
+  extraSmall: 'text-[10px] font-medium text-on-muted',
 };
 
 const defaultElements: Record<LabelVariant, LabelElement> = {
@@ -20,6 +21,7 @@ const defaultElements: Record<LabelVariant, LabelElement> = {
   body: 'p',
   caption: 'span',
   small: 'span',
+  extraSmall: 'span',
 };
 
 export const Label = ({

@@ -2,12 +2,12 @@
 
 import React, { useCallback } from 'react';
 import { Label } from '../../../components/Label';
-import { Badge } from '../../../components/Badge';
 import { LeagueTable } from '../components/LeagueTable';
 import { WebSocketStatusBar } from '../../../components/WebSocketStatusBar';
 import { useGetStandings } from '../useCases/useGetStandings';
 import { useNavigate } from 'react-router';
-import { ErrorCard } from '../../../components/ErrorCard';
+import { ErrorState } from '../../../components/ErrorState';
+import { LeagueHeader } from '../components/LeagueHeader';
 
 export const LeagueScreen: React.FC = () => {
   const { standings, loading, error, refetchClubs, isConnected, socketError } = useGetStandings();
@@ -24,23 +24,24 @@ export const LeagueScreen: React.FC = () => {
 
     if (error) {
       return (
-        <div className="flex justify-center items-center flex-grow-1">
-          <ErrorCard
-            title="Error loading League Data"
-            message={error}
-            onRetry={refetchClubs}
-            retryLabel="Retry"
-          />
-        </div>
+        <ErrorState
+          title="Unable to Load League Data"
+          message="We're having trouble fetching the latest league information. This could be due to a network issue."
+          error={error}
+          onRetry={refetchClubs}
+        />
       );
     }
 
     return (
       <>
-        <LeagueTable
-          onRowClick={(clubCode: string) => navigate(`/club/${clubCode}`)}
-          tableRows={standings}
-        />
+        <LeagueHeader />
+        <div className="max-w-6xl mx-auto px-6 py-8">
+          <LeagueTable
+            onRowClick={(clubCode: string) => navigate(`/club/${clubCode}`)}
+            tableRows={standings}
+          />
+        </div>
       </>
     );
   }, [standings, loading, error, refetchClubs, isConnected, socketError]);
@@ -48,23 +49,7 @@ export const LeagueScreen: React.FC = () => {
   return (
     <div className="min-h-screen bg-surface">
       <WebSocketStatusBar isConnected={isConnected} error={socketError} />
-      <div className="bg-white border-b border-surface-border">
-        <div className="max-w-6xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-center mb-4">
-            <Badge variant="primary">Premier League 2019/20</Badge>
-          </div>
-          <div className="text-center">
-            <Label variant="heading" as="h1" className="text-3xl font-bold text-primary mb-2">
-              League Table
-            </Label>
-            <Label variant="body" className="text-on-muted">
-              Live simulation of the 2019/20 season
-            </Label>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 py-8">{renderContent()}</div>
+      {renderContent()}
     </div>
   );
 };

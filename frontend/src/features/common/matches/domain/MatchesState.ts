@@ -1,6 +1,6 @@
 /** @format */
 
-import { Match } from '../api/dto/Match';
+import { Match } from './Match';
 
 export interface MatchesState {
   matchData: Match[];

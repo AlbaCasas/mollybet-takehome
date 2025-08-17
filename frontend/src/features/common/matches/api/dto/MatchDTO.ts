@@ -1,6 +1,6 @@
 /** @format */
 
-export interface Match {
+export interface MatchDTO {
   round: string;
   date: string;
   home: string;
