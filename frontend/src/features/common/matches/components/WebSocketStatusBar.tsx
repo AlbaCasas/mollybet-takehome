@@ -1,6 +1,6 @@
 /** @format */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Label } from '../../../../components/Label';
 import { cn } from '../../../../core/styles/utils';
 import { usePremierLeagueMatches } from '../context/MatchesProvider';
@@ -22,11 +22,15 @@ export const WebSocketStatusBar = () => {
     return isConnected ? 'Connected' : 'Disconnected';
   };
 
+  const lastMatchDay = useMemo(() => {
+    return Math.max(...matches.map((match) => match.round));
+  }, [matches]);
+
   return (
     <div className="bg-surface border-b border-surface-border px-4 py-2 flex justify-between items-center sticky top-0 z-10">
       <div className="flex items-center gap-2">
         <Label variant="small" className="text-on-muted">
-          Premier League Day {matches.length > 0 ? matches[matches.length - 1].round : 0}
+          Premier League - {lastMatchDay > 0 ? `Day ${lastMatchDay}` : 'Not started'}
         </Label>
       </div>
       <div className="flex items-center gap-2">
