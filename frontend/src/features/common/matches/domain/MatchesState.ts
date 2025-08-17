@@ -1,9 +1,9 @@
 /** @format */
 
-import { Match } from './Match';
+import { PremierLeagueMatch } from './PremierLeagueMatch';
 
 export interface MatchesState {
-  matchData: Match[];
+  matches: PremierLeagueMatch[];
   isConnected: boolean;
   error: string | null;
 }

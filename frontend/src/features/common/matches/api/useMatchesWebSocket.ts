@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 import { WebSocketClient } from '../../../../core/api/wsClient';
 import { MatchDTO } from './dto/MatchDTO';
-import { Match } from '../domain/Match';
+import { PremierLeagueMatch } from '../domain/PremierLeagueMatch';
 
 export const useMatchesWebSocket = () => {
-  const [data, setData] = useState<Match[]>([]);
+  const [data, setData] = useState<PremierLeagueMatch[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,14 +22,15 @@ export const useMatchesWebSocket = () => {
       // Guard in case only one match is received in the message
       const wsMatchesArray: MatchDTO[] = Array.isArray(newData) ? newData : [newData];
 
-      const matches: Match[] = wsMatchesArray.map((match) => ({
+      const matches = wsMatchesArray.filter((match) => match.competition === 'Premier League');
+      const premierLeagueMatches: PremierLeagueMatch[] = matches.map((match) => ({
         ...match,
         homeClub: match.home,
         awayClub: match.away,
         homeScore: match.score.ft[0],
         awayScore: match.score.ft[1],
       }));
-      setData((prev) => [...prev, ...matches]);
+      setData((prev) => [...prev, ...premierLeagueMatches]);
     };
 
     wsClient.onTextMessage = (message: string) => {

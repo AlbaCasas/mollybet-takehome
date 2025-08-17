@@ -3,17 +3,17 @@
 import { ClubDTO } from '../../api/dto/ClubDTO';
 import { Standing } from '../Standing';
 import { ClubStats } from '../ClubStats';
-import { Match } from '../../../common/matches/domain/Match';
+import { PremierLeagueMatch } from '../../../common/matches/domain/PremierLeagueMatch';
 
 const POINTS_WIN = 3;
 const POINTS_DRAW = 1;
 
-function isMatchForClub(m: Match, clubCode: string): boolean {
-  return m.homeClub === clubCode || m.awayClub === clubCode;
+function isMatchForClub(match: PremierLeagueMatch, clubCode: string): boolean {
+  return match.homeClub === clubCode || match.awayClub === clubCode;
 }
 
 function goalsForAndAgainst(
-  m: Match,
+  m: PremierLeagueMatch,
   clubCode: string,
   homeGoals: number,
   awayGoals: number
@@ -28,7 +28,7 @@ function formatGoalDifference(gd: number): string {
   return gd > 0 ? `+${gd}` : String(gd);
 }
 
-function computeClubStats(clubCode: string, matches: Match[]): ClubStats {
+function computeClubStats(clubCode: string, matches: PremierLeagueMatch[]): ClubStats {
   let played = 0;
   let won = 0;
   let drawn = 0;
@@ -76,9 +76,19 @@ function compareRows(a: Standing, b: Standing): number {
   );
 }
 
-export function computeStandings(clubs: ClubDTO[], matches: Match[]): Standing[] {
-  const rows = clubs.map((club) => {
-    const stats = computeClubStats(club.code, matches);
+export function computeStandings(
+  clubs: ClubDTO[],
+  premierLeagueMatches: PremierLeagueMatch[]
+): Standing[] {
+  // [AC] Clarification: I only render clubs that have Premier League matches
+  const clubsWithPremierLeagueMatches = clubs.filter((club) => {
+    return premierLeagueMatches.some(
+      (match) => match.homeClub === club.code || match.awayClub === club.code
+    );
+  });
+
+  const rows = clubsWithPremierLeagueMatches.map((club) => {
+    const stats = computeClubStats(club.code, premierLeagueMatches);
     return {
       clubName: club.name,
       clubCode: club.code,

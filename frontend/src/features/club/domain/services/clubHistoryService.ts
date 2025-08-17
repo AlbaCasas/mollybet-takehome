@@ -1,13 +1,14 @@
 /** @format */
 
-import { Match } from '../../../common/matches/domain/Match';
+import { PremierLeagueMatch } from '../../../common/matches/domain/PremierLeagueMatch';
 import { ClubHistory } from '../ClubHistory';
 import { ClubMatch, Result, Venue } from '../Match';
 
-const isClubInMatch = (code: string, m: Match) => m.homeClub === code || m.awayClub === code;
-const isHomeTeam = (code: string, m: Match) => m.homeClub === code;
+const isClubInMatch = (code: string, m: PremierLeagueMatch) =>
+  m.homeClub === code || m.awayClub === code;
+const isHomeTeam = (code: string, m: PremierLeagueMatch) => m.homeClub === code;
 
-const computeClubMatches = (code: string, matches: Match[]): ClubMatch[] =>
+const computeClubMatches = (code: string, matches: PremierLeagueMatch[]): ClubMatch[] =>
   matches
     .filter((match) => isClubInMatch(code, match))
     .map((match) => {
@@ -38,7 +39,7 @@ const computeClubMatches = (code: string, matches: Match[]): ClubMatch[] =>
 export const computeClubHistory = (
   clubCode: string,
   clubName: string,
-  matches: Match[]
+  matches: PremierLeagueMatch[]
 ): ClubHistory => ({
   name: clubName,
   code: clubCode,

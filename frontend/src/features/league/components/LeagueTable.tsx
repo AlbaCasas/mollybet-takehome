@@ -50,13 +50,13 @@ export const LeagueTable = ({
 
           {tableRows.length === 0 ? (
             <TableBody>
-              <tr>
+              <TableRow className="bg-white">
                 <TableTD colSpan={COLS} className="px-4 py-8 text-center">
                   <Label variant="body" className="text-on-muted">
-                    Error fetching clubs. Please try again later.
+                    There are no matches for this season yet. Please wait for the season to start.
                   </Label>
                 </TableTD>
-              </tr>
+              </TableRow>
             </TableBody>
           ) : (
             <TableBody>

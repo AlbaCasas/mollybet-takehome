@@ -2,18 +2,18 @@
 
 import { useMemo } from 'react';
 import { useClubs } from '../api/useClubs';
-import { useMatches } from '../../common/matches/context/MatchesProvider';
 import { computeStandings } from '../domain/services/standingsService';
 import { Standing } from '../domain/Standing';
+import { usePremierLeagueMatches } from '../../common/matches/context/MatchesProvider';
 
 export const useGetStandings = () => {
   const { clubs, loading: clubsLoading, error: clubsError, refetch } = useClubs();
-  const { matchData, isConnected, error: matchesError } = useMatches();
+  const { matches, isConnected, error: matchesError } = usePremierLeagueMatches();
 
   const standings: Standing[] = useMemo(() => {
     if (!clubs.length) return [];
-    return computeStandings(clubs, matchData);
-  }, [clubs, matchData]);
+    return computeStandings(clubs, matches);
+  }, [clubs, matches]);
 
   return {
     standings,

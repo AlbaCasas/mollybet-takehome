@@ -5,6 +5,7 @@ export interface MatchDTO {
   date: string;
   home: string;
   away: string;
+  competition: string;
   score: {
     ft: [number, number];
   };

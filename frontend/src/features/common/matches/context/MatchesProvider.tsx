@@ -14,7 +14,7 @@ export const MatchesProvider: React.FC<MatchesProviderProps> = ({ children }) =>
   const { data, isConnected, error } = useMatchesWebSocket();
 
   const contextValue: MatchesState = {
-    matchData: data,
+    matches: data,
     isConnected,
     error,
   };
@@ -22,10 +22,10 @@ export const MatchesProvider: React.FC<MatchesProviderProps> = ({ children }) =>
   return <MatchesContext.Provider value={contextValue}>{children}</MatchesContext.Provider>;
 };
 
-export const useMatches = (): MatchesState => {
+export const usePremierLeagueMatches = (): MatchesState => {
   const context = useContext(MatchesContext);
   if (context === undefined) {
-    throw new Error('useMatches must be used within a MatchesProvider');
+    throw new Error('usePremierLeagueMatches must be used within a MatchesProvider');
   }
   return context;
 };

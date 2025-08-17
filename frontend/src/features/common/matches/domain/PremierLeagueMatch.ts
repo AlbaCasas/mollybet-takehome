@@ -1,6 +1,6 @@
 /** @format */
 
-export interface Match {
+export interface PremierLeagueMatch {
   round: string;
   date: string;
   homeClub: string;
