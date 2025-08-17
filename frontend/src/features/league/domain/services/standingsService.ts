@@ -4,12 +4,15 @@ import { ClubDTO } from '../../api/dto/ClubDTO';
 import { Standing } from '../Standing';
 import { ClubStats } from '../ClubStats';
 import { PremierLeagueMatch } from '../../../common/matches/domain/PremierLeagueMatch';
+import { areEqualIgnoreCase } from '../../../../core/utils/areEqual';
 
 const POINTS_WIN = 3;
 const POINTS_DRAW = 1;
 
 function isMatchForClub(match: PremierLeagueMatch, clubCode: string): boolean {
-  return match.homeClub === clubCode || match.awayClub === clubCode;
+  return (
+    areEqualIgnoreCase(match.homeClub, clubCode) || areEqualIgnoreCase(match.awayClub, clubCode)
+  );
 }
 
 function goalsForAndAgainst(
@@ -18,7 +21,7 @@ function goalsForAndAgainst(
   homeGoals: number,
   awayGoals: number
 ): { forGoals: number; againstGoals: number } {
-  const isHome = m.homeClub === clubCode;
+  const isHome = areEqualIgnoreCase(m.homeClub, clubCode);
   return isHome
     ? { forGoals: homeGoals, againstGoals: awayGoals }
     : { forGoals: awayGoals, againstGoals: homeGoals };
@@ -68,12 +71,7 @@ function computeClubStats(clubCode: string, matches: PremierLeagueMatch[]): Club
 }
 
 function compareRows(a: Standing, b: Standing): number {
-  return (
-    b.points - a.points ||
-    b.goalDifference - a.goalDifference ||
-    b.goalsFor - a.goalsFor ||
-    a.clubName.localeCompare(b.clubName)
-  );
+  return b.points - a.points || b.goalDifference - a.goalDifference || b.goalsFor - a.goalsFor;
 }
 
 export function computeStandings(
@@ -83,7 +81,9 @@ export function computeStandings(
   // [AC] Clarification: I only render clubs that have Premier League matches
   const clubsWithPremierLeagueMatches = clubs.filter((club) => {
     return premierLeagueMatches.some(
-      (match) => match.homeClub === club.code || match.awayClub === club.code
+      (match) =>
+        areEqualIgnoreCase(match.homeClub, club.code) ||
+        areEqualIgnoreCase(match.awayClub, club.code)
     );
   });
 

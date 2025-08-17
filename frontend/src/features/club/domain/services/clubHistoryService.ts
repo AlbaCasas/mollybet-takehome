@@ -1,12 +1,14 @@
 /** @format */
 
+import { areEqualIgnoreCase } from '../../../../core/utils/areEqual';
 import { PremierLeagueMatch } from '../../../common/matches/domain/PremierLeagueMatch';
 import { ClubHistory } from '../ClubHistory';
 import { ClubMatch, Result, Venue } from '../Match';
 
 const isClubInMatch = (code: string, m: PremierLeagueMatch) =>
-  m.homeClub === code || m.awayClub === code;
-const isHomeTeam = (code: string, m: PremierLeagueMatch) => m.homeClub === code;
+  areEqualIgnoreCase(m.homeClub, code) || areEqualIgnoreCase(m.awayClub, code);
+
+const isHomeTeam = (code: string, m: PremierLeagueMatch) => areEqualIgnoreCase(m.homeClub, code);
 
 const computeClubMatches = (code: string, matches: PremierLeagueMatch[]): ClubMatch[] =>
   matches
@@ -42,6 +44,6 @@ export const computeClubHistory = (
   matches: PremierLeagueMatch[]
 ): ClubHistory => ({
   name: clubName,
-  code: clubCode,
+  code: clubCode.toUpperCase(),
   matches: computeClubMatches(clubCode, matches),
 });
