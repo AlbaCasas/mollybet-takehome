@@ -1,5 +1,23 @@
 # Mollybet Frontend Take-Home
 
+_Developed by **Alba Casas** as the first stage of the interviewing process for the Frontend Engineer role at Colet Systems_
+
+---
+
+## Result Screenshots
+
+Quick preview of the implemented solution
+
+### League Table
+![League Table Screenshot](./screenshots/league-table.png)
+
+### Team History Page
+![Team History Screenshot](./screenshots/team-history.png)
+
+---
+
+## Original Instructions  
+
 As a sports trading platform we deal with lots of live sports data. We have created a take home task that reflects this. It should take you between one to two hours to complete.
 
 ## Tasks
